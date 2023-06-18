@@ -1,0 +1,16 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "자바스크립트",
+      "content": "할만한 줄......",
+      "isDone": false
+    },
+    {
+      "id": 2,
+      "title": "타입스크립트",
+      "content": "너무 어렵지......",
+      "isDone": true
+    }
+  ]
+}
