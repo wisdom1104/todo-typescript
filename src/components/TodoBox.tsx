@@ -25,7 +25,7 @@ const StTodoBox = styled.div`
   align-items: center;
   border: 3px solid steelblue;
   border-radius: 20px;
-  width: auto;
+  width: 250px;
   height: auto;
   padding: 10px;
   margin: 10px;

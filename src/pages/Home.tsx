@@ -11,16 +11,16 @@ const useGetTodos = () => {
     data: todos,
     isError,
     isLoading,
-  } = useQuery({
-    queryFn: async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/todos`
-      );
-      return response.data;
-    },
+  } = useQuery(["todos"], async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/todos`
+    );
+    return response.data;
   });
+
   return { todos, isError, isLoading };
 };
+
 function Home() {
   const { isLoading, isError, todos } = useGetTodos();
 

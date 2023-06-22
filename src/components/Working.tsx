@@ -13,8 +13,6 @@ export interface Todos {
 }
 
 function Working({ todos }: Todos) {
-  console.log(todos);
-
   return (
     <>
       <h2>Working...</h2>
@@ -22,11 +20,9 @@ function Working({ todos }: Todos) {
         {todos.map((item) => {
           return (
             item.isDone === false && (
-              <>
-                <div key={item.id}>
-                  <TodoBox item={item} />
-                </div>
-              </>
+              <div key={item.id}>
+                <TodoBox item={item} />
+              </div>
             )
           );
         })}

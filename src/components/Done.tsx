@@ -2,8 +2,6 @@ import TodoBox from "./TodoBox";
 import { StTodoPlace, Todos } from "./Working";
 
 function Done({ todos }: Todos) {
-  console.log(todos);
-
   return (
     <>
       <h2>Done...</h2>
@@ -11,11 +9,9 @@ function Done({ todos }: Todos) {
         {todos.map((item) => {
           return (
             item.isDone === false && (
-              <>
-                <div key={item.id}>
-                  <TodoBox item={item} />
-                </div>
-              </>
+              <div key={item.id}>
+                <TodoBox item={item} />
+              </div>
             )
           );
         })}
