@@ -8,7 +8,7 @@ function Done({ todos }: Todos) {
       <StTodoPlace>
         {todos.map((item) => {
           return (
-            item.isDone === false && (
+            item.isDone === true && (
               <div key={item.id}>
                 <TodoBox item={item} />
               </div>
