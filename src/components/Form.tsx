@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import styled from "styled-components";
 
 interface NewTodo {
   title: string;
@@ -41,10 +42,10 @@ function Form() {
 
   return (
     <>
-      <form onSubmit={onSubmitFormHandler}>
-        <div>
+      <StForm onSubmit={onSubmitFormHandler}>
+        <StInputBox>
           <span>제목: </span>
-          <input
+          <StInput
             maxLength={15}
             type="text"
             value={title}
@@ -53,7 +54,7 @@ function Form() {
             }}
           />
           <span> 내용: </span>
-          <input
+          <StInput
             maxLength={50}
             type="text"
             value={content}
@@ -61,13 +62,56 @@ function Form() {
               setContent(e.target.value);
             }}
           />
-        </div>
-        <button type="submit" value="추가하기">
+        </StInputBox>
+        <StFormBtn type="submit" value="추가하기">
           추가하기
-        </button>
-      </form>
+        </StFormBtn>
+      </StForm>
     </>
   );
 }
 
 export default Form;
+
+const StForm = styled.form`
+  display: flex;
+  width: 98%;
+  height: 70px;
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(141, 175, 203);
+  border-radius: 20px;
+  box-sizing: border-box;
+  font-size: 20px;
+  margin-bottom: 20px;
+`;
+
+const StInputBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
+const StInput = styled.input`
+  border-radius: 10px;
+  border: 2px solid rgb(141, 175, 203);
+  height: 30px;
+  width: 190px;
+  &:hover {
+    border: 2px solid steelblue;
+  }
+`;
+
+const StFormBtn = styled.button`
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  border: none;
+  font-size: 20px;
+  padding: 7px 20px;
+  &:hover {
+    border: 2px solid steelblue;
+  }
+`;
