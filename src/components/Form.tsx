@@ -7,7 +7,7 @@ interface NewTodo {
   content: string;
   isDone: boolean;
 }
-const useAddComment = () => {
+const useAddTodo = () => {
   const queryClient = useQueryClient();
 
   const { mutate: addComment } = useMutation({
@@ -26,7 +26,7 @@ function Form() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const { addComment } = useAddComment();
+  const { addComment } = useAddTodo();
   const onSubmitFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newTodo = {
