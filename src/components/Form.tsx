@@ -11,7 +11,7 @@ interface NewTodo {
 const useAddTodo = () => {
   const queryClient = useQueryClient();
 
-  const { mutate: addComment } = useMutation({
+  const { mutate: addTodo } = useMutation({
     mutationFn: async (newTodo: NewTodo) => {
       await axios.post(`${process.env.REACT_APP_SERVER_URL}/todos`, newTodo);
     },
@@ -20,14 +20,14 @@ const useAddTodo = () => {
     },
   });
 
-  return { addComment };
+  return { addTodo };
 };
 
 function Form() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const { addComment } = useAddTodo();
+  const { addTodo } = useAddTodo();
   const onSubmitFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newTodo = {
@@ -35,7 +35,7 @@ function Form() {
       content,
       isDone: false,
     };
-    addComment(newTodo);
+    addTodo(newTodo);
     setTitle("");
     setContent("");
   };
