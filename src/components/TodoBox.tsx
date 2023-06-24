@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Todo } from "./Working";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 export interface Props {
   todo: Todo;
@@ -69,6 +70,7 @@ const useCompletTodo = () => {
 };
 
 function TodoBox({ todo }: Props) {
+  const navi = useNavigate();
   const [editTitle, setEditTitle] = useState(todo.title);
   const [editContent, setEditContent] = useState(todo.content);
   const [isEdit, setIsEdit] = useState(false);
@@ -91,6 +93,16 @@ function TodoBox({ todo }: Props) {
     <StTodoBox>
       {!isEdit ? (
         <>
+          <StSubBtn>
+            <StBtn
+              borderColor={"#ffc95f"}
+              onClick={() => {
+                navi(`/detail/${todo.id}`);
+              }}
+            >
+              상세페이지
+            </StBtn>
+          </StSubBtn>
           <StTodBoxText>
             <StTitle>{todo.title}</StTitle>
             <StContent>{todo.content}</StContent>
@@ -179,11 +191,10 @@ const StTodoBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   border: 3px solid steelblue;
   border-radius: 20px;
   width: 250px;
-  min-height: 170px;
+  min-height: 200px;
   height: auto;
   padding: 10px;
   margin: 10px;
@@ -228,4 +239,10 @@ export const StInput = styled.input`
   &:hover {
     border: 2px solid steelblue;
   }
+`;
+
+export const StSubBtn = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 `;
