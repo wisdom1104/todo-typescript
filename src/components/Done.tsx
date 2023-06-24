@@ -10,7 +10,7 @@ function Done({ todos }: Todos) {
           return (
             item.isDone === true && (
               <div key={item.id}>
-                <TodoBox item={item} />
+                <TodoBox todo={item} />
               </div>
             )
           );

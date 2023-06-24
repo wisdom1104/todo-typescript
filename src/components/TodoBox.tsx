@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Props } from "./Working";
+import { Todo } from "./Working";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
-export interface Todo {
-  item: Props;
+export interface Props {
+  todo: Todo;
+}
+
+export interface StBtnProps {
+  borderColor: string;
 }
 
 export type Id = number;
@@ -25,25 +29,113 @@ const useDeleteTodo = () => {
   return { deleteTodo };
 };
 
-function TodoBox({ item }: Todo) {
+const useEditTodo = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate: editTodo } = useMutation({
+    mutationFn: async (edit: Todo) => {
+      await axios.patch(
+        `${process.env.REACT_APP_SERVER_URL}/todos/${edit.id}`,
+        {
+          title: edit.title,
+          content: edit.content,
+        }
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todos"]);
+    },
+  });
+
+  return { editTodo };
+};
+
+function TodoBox({ todo }: Props) {
+  const [editTitle, setEditTitle] = useState(todo.title);
+  const [editContent, setEditContent] = useState(todo.content);
+  const [isEdit, setIsEdit] = useState(false);
+
   const { deleteTodo } = useDeleteTodo();
   const onDeleteHandler = (id: Id) => {
     deleteTodo(id);
   };
+  const { editTodo } = useEditTodo();
+  const onEditHandler = (edit: Todo) => {
+    editTodo(edit);
+    setIsEdit(!isEdit);
+  };
 
   return (
     <StTodoBox>
-      <StTodBoxText>
-        <StTitle>{item.title}</StTitle>
-        <StContent>{item.content}</StContent>
-        <StBtn
-          onClick={() => {
-            onDeleteHandler(item.id);
-          }}
-        >
-          삭제하기
-        </StBtn>
-      </StTodBoxText>
+      {!isEdit ? (
+        <>
+          <StTodBoxText>
+            <StTitle>{todo.title}</StTitle>
+            <StContent>{todo.content}</StContent>
+          </StTodBoxText>
+          <StBtnPlace>
+            <StBtn
+              borderColor={"#ff7c92"}
+              onClick={() => {
+                onDeleteHandler(todo.id);
+              }}
+            >
+              삭제하기
+            </StBtn>
+            <StBtn
+              borderColor={"#5fc4ff"}
+              onClick={() => {
+                setIsEdit(!isEdit);
+              }}
+            >
+              수정하기
+            </StBtn>
+          </StBtnPlace>
+        </>
+      ) : (
+        <>
+          <StInput
+            maxLength={15}
+            type="text"
+            value={editTitle}
+            onChange={(e) => {
+              setEditTitle(e.target.value);
+            }}
+          />
+          <StInput
+            maxLength={50}
+            style={{ margin: "20px 0px" }}
+            type="text"
+            value={editContent}
+            onChange={(e) => {
+              setEditContent(e.target.value);
+            }}
+          />
+          <StBtnPlace>
+            <StBtn
+              borderColor={"#ff7c92"}
+              onClick={() => {
+                setIsEdit(!isEdit);
+              }}
+            >
+              수정취소
+            </StBtn>
+            <StBtn
+              borderColor={"#5fc4ff"}
+              onClick={() => {
+                const edit = {
+                  id: todo.id,
+                  title: editTitle,
+                  content: editContent,
+                };
+                onEditHandler(edit);
+              }}
+            >
+              수정완료
+            </StBtn>
+          </StBtnPlace>
+        </>
+      )}
     </StTodoBox>
   );
 }
@@ -57,6 +149,7 @@ const StTodoBox = styled.div`
   border: 3px solid steelblue;
   border-radius: 20px;
   width: 250px;
+  min-height: 170px;
   height: auto;
   padding: 10px;
   margin: 10px;
@@ -78,11 +171,27 @@ const StContent = styled.span`
   margin: 20px 0px;
 `;
 
-export const StBtn = styled.button`
-  border: 2px dotted #ff7c92;
+export const StBtnPlace = styled.div`
+  display: flex;
+  gap: 7px;
+  margin: 0px auto;
+`;
+
+export const StBtn = styled.button<StBtnProps>`
+  border: 2px dotted ${(props) => props.borderColor};
   border-radius: 10px;
   padding: 7px 10px;
   &:hover {
-    border: 2px solid #ff7c92;
+    border: 2px solid ${(props) => props.borderColor};
+  }
+`;
+
+export const StInput = styled.input`
+  border-radius: 10px;
+  border: 2px solid rgb(141, 175, 203);
+  height: 30px;
+  width: 190px;
+  &:hover {
+    border: 2px solid steelblue;
   }
 `;

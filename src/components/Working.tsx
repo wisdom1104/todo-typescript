@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import TodoBox from "./TodoBox";
 
-export interface Props {
+export interface Todo {
   id: number;
   title: string;
   content: string;
-  isDone: boolean;
+  isDone?: boolean;
 }
 
 export interface Todos {
-  todos: Props[];
+  todos: Todo[];
 }
 
 function Working({ todos }: Todos) {
@@ -21,7 +21,7 @@ function Working({ todos }: Todos) {
           return (
             item.isDone === false && (
               <div key={item.id}>
-                <TodoBox item={item} />
+                <TodoBox todo={item} />
               </div>
             )
           );
