@@ -3,8 +3,8 @@ import TodoBox from "./TodoBox";
 
 export interface Todo {
   id: number;
-  title: string;
-  content: string;
+  title?: string;
+  content?: string;
   isDone?: boolean;
 }
 

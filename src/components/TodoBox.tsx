@@ -12,13 +12,11 @@ export interface StBtnProps {
   borderColor: string;
 }
 
-export type Id = number;
-
 const useDeleteTodo = () => {
   const queryClient = useQueryClient();
 
   const { mutate: deleteTodo } = useMutation({
-    mutationFn: async (id: Id) => {
+    mutationFn: async (id: Todo["id"]) => {
       await axios.delete(`${process.env.REACT_APP_SERVER_URL}/todos/${id}`);
     },
     onSuccess: () => {
@@ -50,19 +48,43 @@ const useEditTodo = () => {
   return { editTodo };
 };
 
+const useCompletTodo = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate: completTodo } = useMutation({
+    mutationFn: async (complet: Todo) => {
+      await axios.patch(
+        `${process.env.REACT_APP_SERVER_URL}/todos/${complet.id}`,
+        {
+          isDone: complet.isDone,
+        }
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todos"]);
+    },
+  });
+
+  return { completTodo };
+};
+
 function TodoBox({ todo }: Props) {
   const [editTitle, setEditTitle] = useState(todo.title);
   const [editContent, setEditContent] = useState(todo.content);
   const [isEdit, setIsEdit] = useState(false);
 
   const { deleteTodo } = useDeleteTodo();
-  const onDeleteHandler = (id: Id) => {
-    deleteTodo(id);
+  const onDeleteHandler = (id: Todo["id"]) => {
+    deleteTodo(todo.id);
   };
   const { editTodo } = useEditTodo();
   const onEditHandler = (edit: Todo) => {
     editTodo(edit);
     setIsEdit(!isEdit);
+  };
+  const { completTodo } = useCompletTodo();
+  const onCompletHandler = (complet: Todo) => {
+    completTodo(complet);
   };
 
   return (
@@ -89,6 +111,18 @@ function TodoBox({ todo }: Props) {
               }}
             >
               수정하기
+            </StBtn>
+            <StBtn
+              borderColor={"#83c671"}
+              onClick={() => {
+                const complet = {
+                  id: todo.id,
+                  isDone: !todo.isDone,
+                };
+                onCompletHandler(complet);
+              }}
+            >
+              {todo.isDone ? "취소" : "완료"}
             </StBtn>
           </StBtnPlace>
         </>
