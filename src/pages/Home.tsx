@@ -35,7 +35,6 @@ function Home() {
   return (
     <>
       <Header />
-      <div>Home</div>
       <Form />
       <Working todos={todos} />
       <Done todos={todos} />

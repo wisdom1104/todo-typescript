@@ -36,5 +36,13 @@
       "isDone": false,
       "id": 7
     }
+  ],
+  "user": [
+    {
+      "id": 1,
+      "email": "1@1.1",
+      "password": "smile",
+      "nickname": "올라프"
+    }
   ]
 }

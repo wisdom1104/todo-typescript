@@ -1,12 +1,23 @@
 import React from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 function Header() {
+  const navi = useNavigate();
   return (
     <>
       <StHeader>
         <StHeaderTitle>My Todo List</StHeaderTitle>
-        <span>Olaf</span>
+        <div>
+          <button
+            onClick={() => {
+              navi("/signup");
+            }}
+          >
+            회원가입
+          </button>
+          {/* <span>Olaf</span> */}
+        </div>
       </StHeader>
     </>
   );
