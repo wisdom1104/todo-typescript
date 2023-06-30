@@ -50,12 +50,23 @@ function Signup() {
     e.preventDefault();
     const checkPw = e.target.value;
 
-    if (password.length >= 1 && password !== checkPw) {
+    if (checkPw === "") {
+      setpasswordCheckPwMsg("");
+    } else if (password.length >= 1 && password !== checkPw) {
       setpasswordCheckPwMsg("비밀번호가 일치하지 않습니다.");
-    }
-    if (password.length >= 1 && password === checkPw) {
+    } else if (password.length >= 1 && password === checkPw) {
       setpasswordCheckPwMsg("비밀번호가 일치합니다.");
     }
+  };
+
+  const [emailMsg, setEmailMsg] = useState("");
+  const validEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    const isValidEmail =
+      /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email);
+    setEmailMsg(
+      isValidEmail || email === "" ? "" : "이메일 형식에 맞지 않습니다."
+    );
   };
   return (
     <form onSubmit={onSubmitFormHandler}>
@@ -67,9 +78,11 @@ function Signup() {
           value={email}
           placeholder="이메일을 입력해 주세요."
           onChange={(e) => {
+            validEmail(e);
             setEmail(e.target.value);
           }}
         />
+        <div>{emailMsg}</div>
       </div>
       <div>
         <span>닉네임</span>
