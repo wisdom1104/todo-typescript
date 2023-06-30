@@ -49,14 +49,15 @@ function Signup() {
   const onChangePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const checkPw = e.target.value;
-
-    if (checkPw === "") {
-      setpasswordCheckPwMsg("");
-    } else if (password.length >= 1 && password !== checkPw) {
-      setpasswordCheckPwMsg("비밀번호가 일치하지 않습니다.");
-    } else if (password.length >= 1 && password === checkPw) {
-      setpasswordCheckPwMsg("비밀번호가 일치합니다.");
-    }
+    setpasswordCheckPwMsg(
+      checkPw === ""
+        ? ""
+        : password.length >= 1 && password !== checkPw
+        ? "비밀번호가 일치하지 않습니다."
+        : password.length >= 1 && password === checkPw
+        ? "비밀번호가 일치합니다."
+        : ""
+    );
   };
 
   const [emailMsg, setEmailMsg] = useState("");
@@ -66,6 +67,17 @@ function Signup() {
       /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email);
     setEmailMsg(
       isValidEmail || email === "" ? "" : "이메일 형식에 맞지 않습니다."
+    );
+  };
+
+  const [nickMsg, setNickMsg] = useState("");
+  const validNick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nick = e.target.value;
+    const isValidNick = /^[가-힣a-zA-Z0-9]{2,15}$/.test(nick);
+    setNickMsg(
+      isValidNick || nick === ""
+        ? ""
+        : "닉네임은 2~15글자, 한글, 알파벳, 숫자만 입력 가능합니다"
     );
   };
   return (
@@ -91,9 +103,11 @@ function Signup() {
           value={nickname}
           placeholder="닉네임을 입력해 주세요."
           onChange={(e) => {
+            validNick(e);
             setNickname(e.target.value);
           }}
         />
+        <div>{nickMsg}</div>
       </div>
       <div>
         <span>비밀번호</span>
@@ -113,8 +127,8 @@ function Signup() {
           value={passwordCheck}
           placeholder="비밀번호를 다시 입력해 주세요."
           onChange={(e) => {
-            setPasswordCheck(e.target.value);
             onChangePasswordCheck(e);
+            setPasswordCheck(e.target.value);
           }}
         />
         <div>{passwordCheckPwMsg}</div>
