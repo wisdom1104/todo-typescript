@@ -80,6 +80,20 @@ function Signup() {
         : "닉네임은 2~15글자, 한글, 알파벳, 숫자만 입력 가능합니다"
     );
   };
+
+  const [passwordMsg, setPasswordMsg] = useState("");
+  const validPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const password = e.target.value;
+    const isValidPassword =
+      /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{8,15}$/.test(
+        password
+      );
+    setPasswordMsg(
+      isValidPassword || password === ""
+        ? ""
+        : "비밀번호는 숫자와 영어 소문자와 특수문자를 사용해 8~15자리로 입력해주세요."
+    );
+  };
   return (
     <form onSubmit={onSubmitFormHandler}>
       <div>Signup</div>
@@ -116,9 +130,11 @@ function Signup() {
           value={password}
           placeholder="비밀번호를 입력해 주세요."
           onChange={(e) => {
+            validPassword(e);
             setPassword(e.target.value);
           }}
         />
+        <div>{passwordMsg}</div>
       </div>
       <div>
         <span>비밀번호 확인</span>
