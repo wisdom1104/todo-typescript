@@ -165,7 +165,14 @@ function Signup() {
           </InputBox>
           <SignUpBtnBox>
             <Btn type="submit">회원가입</Btn>
-            <SubBtn type="button">로그인</SubBtn>
+            <SubBtn
+              type="button"
+              onClick={() => {
+                navi("/login");
+              }}
+            >
+              로그인
+            </SubBtn>
           </SignUpBtnBox>
         </Form>
       </SignUpBox>
