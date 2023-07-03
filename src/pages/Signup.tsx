@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { FaArrowLeft } from "react-icons/fa";
 
 interface NewUser {
   email: string;
@@ -25,6 +27,7 @@ const useAddUser = () => {
 };
 
 function Signup() {
+  const navi = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
@@ -95,64 +98,187 @@ function Signup() {
     );
   };
   return (
-    <form onSubmit={onSubmitFormHandler}>
-      <div>Signup</div>
-      <div>
-        <span>이메일</span>
-        <input
-          type="email"
-          value={email}
-          placeholder="이메일을 입력해 주세요."
-          onChange={(e) => {
-            validEmail(e);
-            setEmail(e.target.value);
-          }}
-        />
-        <div>{emailMsg}</div>
-      </div>
-      <div>
-        <span>닉네임</span>
-        <input
-          type="text"
-          value={nickname}
-          placeholder="닉네임을 입력해 주세요."
-          onChange={(e) => {
-            validNick(e);
-            setNickname(e.target.value);
-          }}
-        />
-        <div>{nickMsg}</div>
-      </div>
-      <div>
-        <span>비밀번호</span>
-        <input
-          type="password"
-          value={password}
-          placeholder="비밀번호를 입력해 주세요."
-          onChange={(e) => {
-            validPassword(e);
-            setPassword(e.target.value);
-          }}
-        />
-        <div>{passwordMsg}</div>
-      </div>
-      <div>
-        <span>비밀번호 확인</span>
-        <input
-          type="password"
-          value={passwordCheck}
-          placeholder="비밀번호를 다시 입력해 주세요."
-          onChange={(e) => {
-            onChangePasswordCheck(e);
-            setPasswordCheck(e.target.value);
-          }}
-        />
-        <div>{passwordCheckPwMsg}</div>
-      </div>
-      <button type="submit">회원가입</button>
-      <Link to="/login">로그인</Link>
-    </form>
+    <SignUpPage>
+      <SignUpBox>
+        <SignUpTitle>
+          <BackBtn
+            onClick={() => {
+              navi("/");
+            }}
+          >
+            <FaArrowLeft />
+          </BackBtn>
+          Signup
+        </SignUpTitle>
+        <Form onSubmit={onSubmitFormHandler}>
+          <InputBox>
+            <InputTitle>이메일</InputTitle>
+            <Input
+              type="email"
+              value={email}
+              placeholder="이메일을 입력해 주세요."
+              onChange={(e) => {
+                validEmail(e);
+                setEmail(e.target.value);
+              }}
+            />
+            <ValidMsg>{emailMsg}</ValidMsg>
+          </InputBox>
+          <InputBox>
+            <InputTitle>닉네임</InputTitle>
+            <Input
+              type="text"
+              value={nickname}
+              placeholder="닉네임을 입력해 주세요."
+              onChange={(e) => {
+                validNick(e);
+                setNickname(e.target.value);
+              }}
+            />
+            <ValidMsg>{nickMsg}</ValidMsg>
+          </InputBox>
+          <InputBox>
+            <InputTitle>비밀번호</InputTitle>
+            <Input
+              type="password"
+              value={password}
+              placeholder="비밀번호를 입력해 주세요."
+              onChange={(e) => {
+                validPassword(e);
+                setPassword(e.target.value);
+              }}
+            />
+            <ValidMsg>{passwordMsg}</ValidMsg>
+          </InputBox>
+          <InputBox>
+            <InputTitle>비밀번호 확인</InputTitle>
+            <Input
+              type="password"
+              value={passwordCheck}
+              placeholder="비밀번호를 다시 입력해 주세요."
+              onChange={(e) => {
+                onChangePasswordCheck(e);
+                setPasswordCheck(e.target.value);
+              }}
+            />
+            <ValidMsg>{passwordCheckPwMsg}</ValidMsg>
+          </InputBox>
+          <SignUpBtnBox>
+            <Btn type="submit">회원가입</Btn>
+            <SubBtn type="button">로그인</SubBtn>
+          </SignUpBtnBox>
+        </Form>
+      </SignUpBox>
+    </SignUpPage>
   );
 }
 
 export default Signup;
+const SignUpPage = styled.div`
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+`;
+
+const SignUpBox = styled.div`
+  width: 570px;
+  background: rgb(255, 255, 255);
+  padding: 60px;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 6px 0px;
+`;
+
+const SignUpTitle = styled.h1`
+  margin-bottom: 45px;
+  font-size: 40px;
+  font-weight: bold;
+  color: rgb(63, 63, 63);
+`;
+
+const Form = styled.form`
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  padding: 0px;
+  border: 0px;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+  height: 80px;
+`;
+
+const InputTitle = styled.span`
+  font-weight: 600;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  height: 40px;
+  padding: 0px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-bottom: 1px solid rgb(163, 163, 163);
+  outline: none;
+  appearance: none;
+`;
+
+const BackBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  font-size: 25px;
+  margin-right: 15px;
+  &:hover {
+    color: lightsteelblue;
+  }
+`;
+
+const Btn = styled.button`
+  display: flex;
+  width: 25%;
+  padding: 0px 20px;
+  border-radius: 6px;
+  background-color: steelblue;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  border: none;
+  cursor: pointer;
+`;
+
+const SubBtn = styled.button`
+  background-color: transparent;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration-line: underline;
+  color: gray;
+  border: none;
+  cursor: pointer;
+`;
+
+const ValidMsg = styled.p`
+  font-size: 12px;
+  color: red;
+  margin-top: 5px;
+`;
+
+const SignUpBtnBox = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  margin-top: 50px;
+  gap: 10px;
+`;
