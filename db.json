@@ -36,25 +36,5 @@
       "isDone": false,
       "id": 7
     }
-  ],
-  "user": [
-    {
-      "id": 1,
-      "email": "1@1.1",
-      "password": "smile",
-      "nickname": "올라프"
-    },
-    {
-      "email": "1234@1.1",
-      "password": "1234",
-      "nickname": "1234",
-      "id": 2
-    },
-    {
-      "email": "test@1.1",
-      "password": "1234",
-      "nickname": "test",
-      "id": 3
-    }
   ]
 }

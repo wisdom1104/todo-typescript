@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
+import { StBtn } from "./TodoBox";
 
 function Header() {
   const navi = useNavigate();
@@ -9,13 +10,22 @@ function Header() {
       <StHeader>
         <StHeaderTitle>My Todo List</StHeaderTitle>
         <div>
-          <button
+          <StBtn
+            borderColor={"steelblue"}
+            onClick={() => {
+              navi("/login");
+            }}
+          >
+            로그인
+          </StBtn>
+          <StBtn
+            borderColor={"lightsteelblue"}
             onClick={() => {
               navi("/signup");
             }}
           >
             회원가입
-          </button>
+          </StBtn>
           {/* <span>Olaf</span> */}
         </div>
       </StHeader>

@@ -1,25 +1,31 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FaArrowLeft } from "react-icons/fa";
 
 interface NewUser {
   email: string;
-  password: string;
   nickname: string;
+  password: string;
+  confirmPassword: string;
 }
 const useAddUser = () => {
+  const navi = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate: addUser } = useMutation({
     mutationFn: async (newUser: NewUser) => {
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/user`, newUser);
+      await axios.post(
+        `${process.env.REACT_APP_USER_KEY}/auth/signup`,
+        newUser
+      );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["user"]);
+      queryClient.invalidateQueries(["auth"]);
       alert("회원가입 성공");
+      navi("/login");
     },
   });
 
@@ -31,28 +37,29 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const { addUser } = useAddUser();
   const onSubmitFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newNser = {
       email,
-      password,
       nickname,
+      password,
+      confirmPassword,
     };
     addUser(newNser);
     setEmail("");
     setPassword("");
-    setPasswordCheck("");
+    setConfirmPassword("");
     setNickname("");
   };
 
-  const [passwordCheckPwMsg, setpasswordCheckPwMsg] = useState("");
-  const onChangePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [confirmPasswordPwMsg, setConfirmPasswordMsg] = useState("");
+  const onChangeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const checkPw = e.target.value;
-    setpasswordCheckPwMsg(
+    setConfirmPasswordMsg(
       checkPw === ""
         ? ""
         : password.length >= 1 && password !== checkPw
@@ -154,14 +161,14 @@ function Signup() {
             <InputTitle>비밀번호 확인</InputTitle>
             <Input
               type="password"
-              value={passwordCheck}
+              value={confirmPassword}
               placeholder="비밀번호를 다시 입력해 주세요."
               onChange={(e) => {
-                onChangePasswordCheck(e);
-                setPasswordCheck(e.target.value);
+                onChangeConfirmPassword(e);
+                setConfirmPassword(e.target.value);
               }}
             />
-            <ValidMsg>{passwordCheckPwMsg}</ValidMsg>
+            <ValidMsg>{confirmPasswordPwMsg}</ValidMsg>
           </InputBox>
           <SignUpBtnBox>
             <Btn type="submit">회원가입</Btn>
