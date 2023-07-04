@@ -10,7 +10,8 @@ export interface Props {
 }
 
 export interface StBtnProps {
-  borderColor: string;
+  borderColor?: string;
+  margin?: string;
 }
 
 const useDeleteTodo = () => {
@@ -224,6 +225,7 @@ export const StBtnPlace = styled.div`
 
 export const StBtn = styled.button<StBtnProps>`
   border: 2px dotted ${(props) => props.borderColor};
+  margin: ${(props) => props.margin || "0px"};
   border-radius: 10px;
   padding: 7px 10px;
   &:hover {

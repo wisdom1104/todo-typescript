@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FaArrowLeft } from "react-icons/fa";
 import { cookies } from "../shared/Cookies";
-// import { cookies } from "../shared/Cookies";
 
 interface User {
   email: string;
@@ -32,15 +31,19 @@ const useLogin = () => {
         path: "/",
         maxAge: 3540,
       });
-      cookies.set("nick", response.data[1], { path: "/", maxAge: 3540 });
-      console.log(response.data[1]);
+      cookies.set("nickname", response.data.nickname, {
+        path: "/",
+        maxAge: 3540,
+      });
+      console.log(response.data.nickname);
+      console.log(response.headers.authorization);
 
       return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["auth"]);
       alert("로그인 성공");
-      // window.location.href = "/";
+      window.location.href = "/";
     },
   });
 
@@ -57,8 +60,8 @@ function Login() {
   const onSubmitFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login({ email, password });
-    // setEmail("");
-    // setPassword("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
