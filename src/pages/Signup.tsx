@@ -12,7 +12,6 @@ interface NewUser {
   confirmPassword: string;
 }
 const useAddUser = () => {
-  const navi = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate: addUser } = useMutation({
@@ -25,7 +24,7 @@ const useAddUser = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["auth"]);
       alert("회원가입 성공");
-      navi("/login");
+      window.location.href = "/login";
     },
   });
 
